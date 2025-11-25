@@ -10,3 +10,11 @@ class BaseSchema(BaseModel):
 # Schema para a nossa Categoria
 class Categoria(BaseSchema):
     nome: Annotated[str, Field(description='Nome da categoria', example='Mercearia', max_length=20)]
+
+# Schema para quando formos DEVOLVER dados para o usuário
+# Herda de Categoria (então já tem 'nome') e adiciona 'id'
+class CategoriaOutput(Categoria):
+    id: int
+
+    class Config:
+        from_attributes = True

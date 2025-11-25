@@ -4,6 +4,7 @@ from meu_projeto_api.schemas import Categoria
 from meu_projeto_api.models import CategoriaModel # <--- Nosso modelo do banco
 from meu_projeto_api.database import get_db # <--- Nossa nova função de conexão
 from typing import Annotated
+from meu_projeto_api.schemas import Categoria, CategoriaOutput
 
 app = FastAPI(title='Minha API de Compras')
 
@@ -32,3 +33,9 @@ async def create_categoria(
     return novo_registro
 
 # para ir sempre ao Swagger(/docs), usar no terminal o comando: uvicorn meu_projeto_api.main:app --reload
+
+@app.get('/categorias', response_model=list[CategoriaOutput])
+async def list_categorias(db: Session = Depends(get_db)):
+    # Busca todas as categorias no banco (equivalente a SELECT * FROM categorias)
+    categorias = db.query(CategoriaModel).all()
+    return categorias
